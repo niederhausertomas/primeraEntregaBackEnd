@@ -3,8 +3,8 @@ import {Router} from 'express'
 const router = Router()
 
 
-import CartManager from '../cartmanager.js';
-const manager = new CartManager('./cart.json');
+import CartManager from '../cartManager.js';
+const manager = new CartManager('./carrito.json');
 
 router.post('/', async (req, res) => {
     const newCart = await manager.addCart()

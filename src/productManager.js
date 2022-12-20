@@ -72,11 +72,11 @@ class ProductManager{
     
     updateProductById = async (id,title,description,price,code,stock, category, status = true, thumbnails = []) => {
         const index = await this.#getIndex(id)
+        console.log(index)
         const updatedProduct= this.#newProduct(id,title,description,price,code,stock, category, status, thumbnails)
         const errors = this.#errorCheck(updatedProduct, "update")
         if (!index) errors.push("Product Id not found")
         return errors.length == 0 ? (this.products[index]=updatedProduct, await fs.promises.writeFile(this.path, JSON.stringify(this.products)),updatedProduct) : errors
-        
     }
 
     deleteProductById = async (id) => {
