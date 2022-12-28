@@ -19,6 +19,7 @@ router.get('/', async (req, res) => {
         }
         res.send({prodLimit})
     }
+    req.io.emit('updatedProducts', products);
 })
 
 router.get('/:pid', async (req, res) => {
@@ -30,6 +31,7 @@ router.get('/:pid', async (req, res) => {
 router.post('/', async (req, res) => {
     const {title, description, price, thumbnails, code, stock, category, status} = req.body
     const addProduct = await manager.addProduct(title, description, price, code, stock, category, status, thumbnails)
+    req.io.emit('updatedProducts', await manager.getProducts());
     res.send(addProduct)
 })
 
@@ -37,13 +39,17 @@ router.put('/:pid', async (req, res) => {
     const id = parseInt(req.params.pid)
     const {title, description, price, thumbnails, code, stock, category, status} = req.body
     const updateProduct = await manager.updateProductById(id, title, description, price, code, stock, category, status, thumbnails)
+    req.io.emit('updatedProducts', await manager.getProducts());
     res.send(updateProduct)
 })
 
 router.delete('/:pid', async (req, res) => {
     const id = parseInt(req.params.pid)
     const deleteProduct =  await manager.deleteProductById(id)
+    req.io.emit('updatedProducts', await manager.getProducts());
     res.send(deleteProduct)
 })
+
+
 
 export default router;
